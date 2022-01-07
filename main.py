@@ -57,6 +57,8 @@ for event in longpoll.listen():
                     chat_sender(chat_id, euro())
                 elif "анекдот" in msg:
                     chat_sender(chat_id, anekdot())
+                else:
+                    chat_sender(chat_id, 'Вероятно, ты имел что-то другое в виду. Попробуй написать "/nb помощь", чтобы посмотреть команды.')
 
             # просто проверка отправки фото
             if msg == "f":

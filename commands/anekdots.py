@@ -1,8 +1,10 @@
-import requests, random
+import requests
+import random
 from bs4 import BeautifulSoup
 
+
 def anekdot():
-    anekdot_page = 'https://www.anekdot.ru/best/anekdot/0107/'
+    anekdot_page = 'https://www.anekdot.ru/release/anekdot/day/'
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
 
     page = requests.get(anekdot_page, headers=headers)
