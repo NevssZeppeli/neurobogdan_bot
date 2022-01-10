@@ -11,4 +11,4 @@ def anekdot():
     soup = BeautifulSoup(page.content, "html.parser")
     convert = soup.find_all('div', {"class": "text"})
 
-    return convert[random.randint(0, len(convert))].text
+    return convert[random.randint(0, len(convert)-1)].text
