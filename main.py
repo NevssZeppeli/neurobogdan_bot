@@ -32,8 +32,8 @@ def photo_sender(id, url):
 # слушаем сервер
 print("Бот включился\n")
 for event in longpoll.listen():
+    
     # обработка сообщений
-
     if event.type == VkBotEventType.MESSAGE_NEW:
 
         chat_id = event.chat_id
@@ -65,13 +65,13 @@ for event in longpoll.listen():
                             'Вероятно, ты имел что-то другое в виду. Попробуй написать "/nb помощь", чтобы посмотреть команды.')
 
         # если человек вышел
-        if event.type == VkBotEventType.MESSAGE_NEW and (action := event.obj['message'].get('action')):
+        if event.type == VkBotEventType.MESSAGE_NEW and (action := event.object['message'].get('action')):
             if action["type"] == "chat_kick_user":
-                print("Пользователь вышел из чата")
+                print("Пользователь", author, "вышел из чата")
                 photo_sender(event.chat_id, "photo-209137754_457239023")
 
         # если вошёл
-        if event.type == VkBotEventType.MESSAGE_NEW and (action := event.obj['message'].get('action')):
+        if event.type == VkBotEventType.MESSAGE_NEW and (action := event.object['message'].get('action')):
             if action["type"] == "chat_invite_user":
-                print("Пользователь зашёл в чат")
+                print("Пользователь", author, "зашёл в чат")
                 photo_sender(event.chat_id, "photo-209137754_457239024")
