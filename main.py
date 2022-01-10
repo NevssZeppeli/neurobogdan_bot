@@ -33,42 +33,45 @@ def photo_sender(id, url):
 print("Бот включился\n")
 for event in longpoll.listen():
     # обработка сообщений
+
     if event.type == VkBotEventType.MESSAGE_NEW:
 
-        # перехватываем сообщения из чата
-        if event.from_chat:
-            chat_id = event.chat_id
-            msg = event.object.message['text'].lower()
-            author = event.object.message['from_id']
+        chat_id = event.chat_id
+        msg = event.object.message['text'].lower()
+        author = event.object.message['from_id']
 
-            if msg[0:3] == '/nb':
-                # для себя в консоль вывожу, для отладки
-                print("Сообщение в чате", str(chat_id))
-                print("Автор", author)
-                print(str(datetime.strftime(datetime.now(), "%H:%M:%S")))
-                print("Текст:", msg)
-                print()
+        # просто проверка отправки фото + можно назват "секреткой"
+        if msg == "f":
+            photo_sender(chat_id, "photo-209137754_457239023")
 
-                if "помощь" in msg:
-                    chat_sender(chat_id, help)
-                elif "курс доллара" in msg:
-                    chat_sender(chat_id, dollar())
-                elif "курс евро" in msg:
-                    chat_sender(chat_id, euro())
-                elif "анекдот" in msg:
-                    chat_sender(chat_id, anekdot())
-                else:
-                    chat_sender(chat_id, 'Вероятно, ты имел что-то другое в виду. Попробуй написать "/nb помощь", чтобы посмотреть команды.')
+        if msg[0:3] == '/nb':
+            # для себя в консоль вывожу, для отладки
+            print("Сообщение в чате", str(chat_id))
+            print("Автор", author)
+            print(str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+            print("Текст:", msg)
+            print()
 
-            # просто проверка отправки фото
-            if msg == "f":
-                photo_sender(chat_id, "photo-209137754_457239023")
+            if "помощь" in msg:
+                chat_sender(chat_id, help)
+            elif "курс доллара" in msg:
+                chat_sender(chat_id, dollar())
+            elif "курс евро" in msg:
+                chat_sender(chat_id, euro())
+            elif "анекдот" in msg:
+                chat_sender(chat_id, anekdot())
+            else:
+                chat_sender(chat_id,
+                            'Вероятно, ты имел что-то другое в виду. Попробуй написать "/nb помощь", чтобы посмотреть команды.')
 
-    # если человек вышел
-    elif event.type == VkBotEventType.GROUP_LEAVE:
-        print("Пользователь покинул чат")
-        photo_sender(chat_id, "photo-209137754_457239023")
-    # если вошёл
-    elif event.type == VkBotEventType.GROUP_JOIN:
-        print("Пользователь зашёл в чат")
-        photo_sender(chat_id, "doc280209342_617512806")
+        # если человек вышел
+        if event.type == VkBotEventType.MESSAGE_NEW and (action := event.obj['message'].get('action')):
+            if action["type"] == "chat_kick_user":
+                print("Пользователь вышел из чата")
+                photo_sender(event.chat_id, "photo-209137754_457239023")
+
+        # если вошёл
+        if event.type == VkBotEventType.MESSAGE_NEW and (action := event.obj['message'].get('action')):
+            if action["type"] == "chat_invite_user":
+                print("Пользователь зашёл в чат")
+                photo_sender(event.chat_id, "photo-209137754_457239024")
