@@ -40,7 +40,7 @@ for event in longpoll.listen():
         msg = event.object.message['text'].lower()
         author = event.object.message['from_id']
 
-        # просто проверка отправки фото + можно назват "секреткой"
+        # просто проверка отправки фото + можно назвать "секреткой"
         if msg == "f":
             photo_sender(chat_id, "photo-209137754_457239023")
 
@@ -66,11 +66,11 @@ for event in longpoll.listen():
     # если человек вышел
     if event.type == VkBotEventType.MESSAGE_NEW and (action := event.object['message'].get('action')):
         if action["type"] == "chat_kick_user":
-            print("Пользователь", author, "вышел из чата\n")
+            print("Пользователь", event.object.message['from_id'], "вышел из чата\n")
             photo_sender(event.chat_id, "photo-209137754_457239023")
 
     # если вошёл
     if event.type == VkBotEventType.MESSAGE_NEW and (action := event.object['message'].get('action')):
         if action["type"] == "chat_invite_user":
-            print("Пользователь", author, "зашёл в чат\n")
+            print("Пользователь", event.object.message['from_id'], "зашёл в чат\n")
             photo_sender(event.chat_id, "photo-209137754_457239024")
